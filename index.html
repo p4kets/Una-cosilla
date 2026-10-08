@@ -1065,51 +1065,126 @@
 
         function secondTest() {
 
-            changeScreen(`
+    changeScreen(`
 
-                <div class="flower">
-                    🧛
-                </div>
+        <div class="flower">
+            🧛
+        </div>
 
-                <div class="mission">
-                    MISIÓN 2 / 4
-                </div>
+        <div class="mission">
+            MISIÓN 2 / 4
+        </div>
 
-                <h2>
-                    Próximamente...
-                </h2>
+        <h2>
+            El expediente de Salma
+        </h2>
 
-                <p class="text">
+        <p class="text">
 
-                    El consejo de Mystic Falls
-                    ha recibido tu expediente.
+            El consejo de Mystic Falls
+            necesita comprobar una cosa...
 
-                    <br><br>
+            <br><br>
 
-                    Y parece que ahora
-                    tienes un problema...
+            Si tuvieras que sobrevivir
+            en el mundo de <i>The Vampire Diaries</i>,
+            ¿qué elegirías?
 
-                    <br><br>
+        </p>
 
-                    🧛
+        <div class="answers">
 
-                    <br><br>
+            <button
+                class="answer"
+                onclick="vampireAnswer(1)"
+            >
+                🧛 Convertirme en vampiro
+            </button>
 
-                    Pero esa prueba todavía
-                    está siendo preparada.
+            <button
+                class="answer"
+                onclick="vampireAnswer(2)"
+            >
+                🌙 Vivir en Mystic Falls
+            </button>
 
-                </p>
+            <button
+                class="answer"
+                onclick="vampireAnswer(3)"
+            >
+                🩸 Meterme en todos los dramas
+            </button>
 
-                <button
-                    class="button"
-                    onclick="firstTest()"
-                >
-                    ← Volver
-                </button>
+            <button
+                class="answer"
+                onclick="vampireAnswer(4)"
+            >
+                🐱 Llevarme un gato y olvidarme de todo
+            </button>
 
-            `);
+        </div>
 
-        }
+        <p id="vampire-result" class="result"></p>
+
+    `);
+
+}
+
+
+function vampireAnswer(answer) {
+
+    const result = document.getElementById("vampire-result");
+
+    const messages = {
+
+        1: `
+            🧛
+            <br><br>
+            Buena elección.
+            Aunque viendo todo lo que pasa en Mystic Falls,
+            quizá no sea la decisión más segura...
+        `,
+
+        2: `
+            🌙
+            <br><br>
+            Valiente decisión.
+            Yo personalmente intentaría no acercarme
+            demasiado a ningún vampiro.
+        `,
+
+        3: `
+            🩸
+            <br><br>
+            Esa es probablemente la respuesta más
+            realista de todas.
+            En Mystic Falls es imposible escapar del drama.
+        `,
+
+        4: `
+            🐱
+            <br><br>
+            La respuesta más inteligente.
+            Vampiros, dramas y problemas...
+            mejor un gato y a casa.
+        `
+
+    };
+
+    result.innerHTML = messages[answer] + `
+
+        <br><br>
+
+        <button
+            class="button"
+            onclick="thirdTest()"
+        >
+            Siguiente prueba →
+        </button>
+
+    `;
+
+}
 
 
     </script>
