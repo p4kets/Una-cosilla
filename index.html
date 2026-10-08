@@ -1063,7 +1063,7 @@
            SEGUNDA PRUEBA
         ========================== */
 
-        function secondTest() {
+       function secondTest() {
 
     changeScreen(`
 
@@ -1124,14 +1124,116 @@
 
         </div>
 
-        <p id="vampire-result" class="result"></p>
-
     `);
 
 }
 
 
 function vampireAnswer(answer) {
+
+    const messages = {
+
+        1: `
+            <div class="flower">
+                🧛
+            </div>
+
+            <div class="mission">
+                MISIÓN SUPERADA
+            </div>
+
+            <h2>
+                Buena elección.
+            </h2>
+
+            <p class="text">
+
+                Aunque viendo todo lo que pasa
+                en Mystic Falls, quizá no sea
+                la decisión más segura...
+
+            </p>
+        `,
+
+        2: `
+            <div class="flower">
+                🌙
+            </div>
+
+            <div class="mission">
+                MISIÓN SUPERADA
+            </div>
+
+            <h2>
+                Valiente decisión.
+            </h2>
+
+            <p class="text">
+
+                Eso sí, intenta no acercarte
+                demasiado a ningún vampiro.
+                Nunca se sabe.
+
+            </p>
+        `,
+
+        3: `
+            <div class="flower">
+                🩸
+            </div>
+
+            <div class="mission">
+                MISIÓN SUPERADA
+            </div>
+
+            <h2>
+                Esa es probablemente la más realista.
+            </h2>
+
+            <p class="text">
+
+                En Mystic Falls es imposible
+                escapar del drama.
+                Así que mejor asumirlo desde el principio.
+
+            </p>
+        `,
+
+        4: `
+            <div class="flower">
+                🐱
+            </div>
+
+            <div class="mission">
+                MISIÓN SUPERADA
+            </div>
+
+            <h2>
+                La respuesta más inteligente.
+            </h2>
+
+            <p class="text">
+
+                Vampiros, dramas y problemas...
+                mejor un gato y a casa.
+
+            </p>
+        `
+
+    };
+
+    changeScreen(messages[answer] + `
+
+        <button
+            class="button"
+            onclick="thirdTest()"
+        >
+            Siguiente prueba →
+        </button>
+
+    `);
+
+}
 
     const result = document.getElementById("vampire-result");
 
