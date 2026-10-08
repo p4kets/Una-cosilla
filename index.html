@@ -787,509 +787,136 @@
 
 
     <script>
-
-
-        /* =========================
-           CAMBIAR PANTALLA
-        ========================== */
-
-        function changeScreen(newContent) {
-
-            const screen =
-                document.getElementById("screen");
-
-            const content =
-                document.getElementById("content");
-
-
-            screen.classList.add("fade-out");
-
-
-            setTimeout(() => {
-
-                content.innerHTML =
-                    newContent;
-
-                screen.classList.remove(
-                    "fade-out"
-                );
-
-            }, 700);
-
-        }
-
-
-
-        /* =========================
-           COMENZAR AVENTURA
-        ========================== */
-
-        function startAdventure() {
-
-            changeScreen(`
-
-                <div class="flower">
-                    🌙
-                </div>
-
-                <div class="mission">
-                    MISIÓN INICIADA
-                </div>
-
-                <h2>
-                    Hola, petit
-                </h2>
-
-                <p class="text">
-
-                    Si estás viendo esto significa
-                    que has decidido aceptar el reto.
-
-                    <br><br>
-
-                    Antes de llegar al final,
-                    tendrás que superar algunas
-                    pequeñas pruebas.
-
-                    <br><br>
-
-                    No te preocupes...
-
-                    <br>
-
-                    creo que eres capaz de conseguirlo. 👀
-
-                </p>
-
-                <button
-                    class="button"
-                    onclick="firstTest()"
-                >
-                    Aceptar misión ✨
-                </button>
-
-            `);
-
-        }
-
-
-
-        /* =========================
-           PRIMERA PRUEBA
-        ========================== */
-
-        function firstTest() {
-
-            changeScreen(`
-
-                <div class="flower">
-                    🐾
-                </div>
-
-                <div class="mission">
-                    MISIÓN 1 / 4
-                </div>
-
-                <h2>
-                    El juicio felino
-                </h2>
-
-                <p class="question">
-
-                    Primera pregunta...
-
-                    <br><br>
-
-                    ¿Qué elegiría probablemente
-                    Petit para pasar un día perfecto?
-
-                </p>
-
-
-                <div class="answers">
-
-                    <button
-                        class="answer"
-                        onclick="catAnswer(1)"
-                    >
-                        🐱 Un mundo lleno de gatos
-                    </button>
-
-
-                    <button
-                        class="answer"
-                        onclick="catAnswer(2)"
-                    >
-                        🧛 Convertirse en vampiro
-                    </button>
-
-
-                    <button
-                        class="answer"
-                        onclick="catAnswer(3)"
-                    >
-                        🎮 Jugar OSU! durante 12 horas
-                    </button>
-
-
-                    <button
-                        class="answer"
-                        onclick="catAnswer(4)"
-                    >
-                        🥔 Ser un minion
-                    </button>
-
-                </div>
-
-                <p class="hint">
-                    Elige sabiamente... o no. 👀
-                </p>
-
-            `);
-
-        }
-
-
-
-        /* =========================
-           RESPUESTAS
-        ========================== */
-
-        function catAnswer(answer) {
-
-            let message = "";
-
-
-            if (answer === 1) {
-
-                message = `
-                    Era demasiado fácil. 🐱
-                    <br><br>
-                    El consejo felino aprueba
-                    completamente tu respuesta.
-                `;
-
-            }
-
-
-            if (answer === 2) {
-
-                message = `
-                    Tiene sentido. 🧛
-                    <br><br>
-                    Después de tanto
-                    Vampire Diaries,
-                    era prácticamente inevitable.
-                `;
-
-            }
-
-
-            if (answer === 3) {
-
-                message = `
-                    Una respuesta completamente válida. 🎮
-                    <br><br>
-                    Aunque tus manos probablemente
-                    necesiten unas vacaciones después.
-                `;
-
-            }
-
-
-            if (answer === 4) {
-
-                message = `
-                    ...
-                    <br><br>
-                    No voy a hacer preguntas. 😂
-                    <br><br>
-                    Pero el consejo de minions
-                    ha aprobado tu respuesta.
-                `;
-
-            }
-
-
-            changeScreen(`
-
-                <div class="success">
-
-                    <div class="flower">
-                        ✨
-                    </div>
-
-                    <div class="mission">
-                        VEREDICTO
-                    </div>
-
-                    <h2>
-                        ¡Correcto!
-                    </h2>
-
-                    <p class="text">
-
-                        ${message}
-
-                        <br><br>
-
-                        Parece que has superado
-                        la primera prueba.
-
-                    </p>
-
-                    <div class="points">
-                        +1 punto de florecilla 🌸
-                    </div>
-
-                    <br><br>
-
-                    <button
-                        class="button"
-                        onclick="secondTest()"
-                    >
-                        Siguiente prueba →
-                    </button>
-
-                </div>
-
-            `);
-
-        }
-
-
-
-        /* =========================
-           SEGUNDA PRUEBA
-        ========================== */
-
-       function secondTest() {
-
-    changeScreen(`
-
-        <div class="flower">
-            🧛
-        </div>
-
-        <div class="mission">
-            MISIÓN 2 / 4
-        </div>
-
-        <h2>
-            El expediente de Salma
-        </h2>
-
-        <p class="text">
-
-            El consejo de Mystic Falls
-            necesita comprobar una cosa...
-
-            <br><br>
-
-            Si tuvieras que sobrevivir
-            en el mundo de <i>The Vampire Diaries</i>,
-            ¿qué elegirías?
-
-        </p>
-
-        <div class="answers">
-
-            <button
-                class="answer"
-                onclick="vampireAnswer(1)"
-            >
-                🧛 Convertirme en vampiro
-            </button>
-
-            <button
-                class="answer"
-                onclick="vampireAnswer(2)"
-            >
-                🌙 Vivir en Mystic Falls
-            </button>
-
-            <button
-                class="answer"
-                onclick="vampireAnswer(3)"
-            >
-                🩸 Meterme en todos los dramas
-            </button>
-
-            <button
-                class="answer"
-                onclick="vampireAnswer(4)"
-            >
-                🐱 Llevarme un gato y olvidarme de todo
-            </button>
-
-        </div>
-
-    `);
-
+function changeScreen(newContent){
+ const screen=document.getElementById('screen');
+ const content=document.getElementById('content');
+ screen.classList.add('fade-out');
+ setTimeout(()=>{content.innerHTML=newContent;screen.classList.remove('fade-out');},700);
 }
 
+function startAdventure(){changeScreen(`
+ <div class="flower">🌙</div>
+ <div class="mission">MISIÓN INICIADA</div>
+ <h2>Hola, petit</h2>
+ <p class="text">Si estás viendo esto significa que has decidido aceptar el reto.<br><br>Antes de llegar al final, tendrás que superar algunas pequeñas pruebas.<br><br>No te preocupes...<br>creo que eres capaz de conseguirlo. 👀</p>
+ <button class="button" onclick="firstTest()">Aceptar misión ✨</button>
+`);}
 
-function vampireAnswer(answer) {
+function firstTest(){changeScreen(`
+ <div class="flower">🐾</div>
+ <div class="mission">MISIÓN 1 / 4</div>
+ <h2>El juicio felino</h2>
+ <p class="question">Primera pregunta...<br><br>¿Qué elegiría probablemente Petit para pasar un día perfecto?</p>
+ <div class="answers">
+  <button class="answer" onclick="catAnswer(1)">🐱 Un mundo lleno de gatos</button>
+  <button class="answer" onclick="catAnswer(2)">🧛 Convertirse en vampiro</button>
+  <button class="answer" onclick="catAnswer(3)">🎮 Jugar OSU! durante 12 horas</button>
+  <button class="answer" onclick="catAnswer(4)">🥔 Ser un minion</button>
+ </div>
+ <p class="hint">Elige sabiamente... o no. 👀</p>
+`);}
 
-    const messages = {
-
-        1: `
-            <div class="flower">
-                🧛
-            </div>
-
-            <div class="mission">
-                MISIÓN SUPERADA
-            </div>
-
-            <h2>
-                Buena elección.
-            </h2>
-
-            <p class="text">
-
-                Aunque viendo todo lo que pasa
-                en Mystic Falls, quizá no sea
-                la decisión más segura...
-
-            </p>
-        `,
-
-        2: `
-            <div class="flower">
-                🌙
-            </div>
-
-            <div class="mission">
-                MISIÓN SUPERADA
-            </div>
-
-            <h2>
-                Valiente decisión.
-            </h2>
-
-            <p class="text">
-
-                Eso sí, intenta no acercarte
-                demasiado a ningún vampiro.
-                Nunca se sabe.
-
-            </p>
-        `,
-
-        3: `
-            <div class="flower">
-                🩸
-            </div>
-
-            <div class="mission">
-                MISIÓN SUPERADA
-            </div>
-
-            <h2>
-                Esa es probablemente la más realista.
-            </h2>
-
-            <p class="text">
-
-                En Mystic Falls es imposible
-                escapar del drama.
-                Así que mejor asumirlo desde el principio.
-
-            </p>
-        `,
-
-        4: `
-            <div class="flower">
-                🐱
-            </div>
-
-            <div class="mission">
-                MISIÓN SUPERADA
-            </div>
-
-            <h2>
-                La respuesta más inteligente.
-            </h2>
-
-            <p class="text">
-
-                Vampiros, dramas y problemas...
-                mejor un gato y a casa.
-
-            </p>
-        `
-
-    };
-
-    changeScreen(messages[answer] + `
-
-        <button
-            class="button"
-            onclick="thirdTest()"
-        >
-            Siguiente prueba →
-        </button>
-
-    `);
-
+function catAnswer(answer){
+ const messages={
+ 1:'Era demasiado fácil. 🐱<br><br>El consejo felino aprueba completamente tu respuesta.',
+ 2:'Tiene sentido. 🧛<br><br>Después de tanto Vampire Diaries, era prácticamente inevitable.',
+ 3:'Una respuesta completamente válida. 🎮<br><br>Aunque tus manos probablemente necesiten unas vacaciones después.',
+ 4:'...<br><br>No voy a hacer preguntas. 😂<br><br>Pero el consejo de minions ha aprobado tu respuesta.'};
+ changeScreen(`<div class="success"><div class="flower">✨</div><div class="mission">VEREDICTO</div><h2>¡Correcto!</h2><p class="text">${messages[answer]}<br><br>Parece que has superado la primera prueba.</p><div class="points">+1 punto de florecilla 🌸</div><br><br><button class="button" onclick="secondTest()">Siguiente prueba →</button></div>`);
 }
 
-    const result = document.getElementById("vampire-result");
+function secondTest(){changeScreen(`
+ <div class="flower">🧛</div>
+ <div class="mission">MISIÓN 2 / 4</div>
+ <h2>El expediente de Salma</h2>
+ <p class="text">El consejo de Mystic Falls necesita comprobar una cosa...<br><br>Si tuvieras que sobrevivir en el mundo de <i>The Vampire Diaries</i>, ¿qué elegirías?</p>
+ <div class="answers">
+  <button class="answer" onclick="vampireAnswer(1)">🧛 Convertirme en vampiro</button>
+  <button class="answer" onclick="vampireAnswer(2)">🌙 Vivir en Mystic Falls</button>
+  <button class="answer" onclick="vampireAnswer(3)">🩸 Meterme en todos los dramas</button>
+  <button class="answer" onclick="vampireAnswer(4)">🐱 Llevarme un gato y olvidarme de todo</button>
+ </div>
+`);}
 
-    const messages = {
-
-        1: `
-            🧛
-            <br><br>
-            Buena elección.
-            Aunque viendo todo lo que pasa en Mystic Falls,
-            quizá no sea la decisión más segura...
-        `,
-
-        2: `
-            🌙
-            <br><br>
-            Valiente decisión.
-            Yo personalmente intentaría no acercarme
-            demasiado a ningún vampiro.
-        `,
-
-        3: `
-            🩸
-            <br><br>
-            Esa es probablemente la respuesta más
-            realista de todas.
-            En Mystic Falls es imposible escapar del drama.
-        `,
-
-        4: `
-            🐱
-            <br><br>
-            La respuesta más inteligente.
-            Vampiros, dramas y problemas...
-            mejor un gato y a casa.
-        `
-
-    };
-
-    result.innerHTML = messages[answer] + `
-
-        <br><br>
-
-        <button
-            class="button"
-            onclick="thirdTest()"
-        >
-            Siguiente prueba →
-        </button>
-
-    `;
-
+function vampireAnswer(answer){
+ const messages={
+ 1:`<div class="flower">🧛</div><div class="mission">MISIÓN SUPERADA</div><h2>Buena elección.</h2><p class="text">Aunque viendo todo lo que pasa en Mystic Falls, quizá no sea la decisión más segura...</p>`,
+ 2:`<div class="flower">🌙</div><div class="mission">MISIÓN SUPERADA</div><h2>Valiente decisión.</h2><p class="text">Eso sí, intenta no acercarte demasiado a ningún vampiro. Nunca se sabe.</p>`,
+ 3:`<div class="flower">🩸</div><div class="mission">MISIÓN SUPERADA</div><h2>Esa es probablemente la más realista.</h2><p class="text">En Mystic Falls es imposible escapar del drama. Así que mejor asumirlo desde el principio.</p>`,
+ 4:`<div class="flower">🐱</div><div class="mission">MISIÓN SUPERADA</div><h2>La respuesta más inteligente.</h2><p class="text">Vampiros, dramas y problemas... mejor un gato y a casa.</p>`};
+ changeScreen(messages[answer]+`<br><br><button class="button" onclick="thirdTest()">Siguiente prueba →</button>`);
 }
 
+function thirdTest(){
+ changeScreen(`
+  <div class="flower">🎮</div>
+  <div class="mission">MISIÓN 3 / 4</div>
+  <h2>El reto de OSU!</h2>
+  <p class="text">A ver si tus reflejos siguen funcionando, petit.<br><br>Haz clic en los 5 círculos que aparecerán.</p>
+  <div id="osu-area" style="position:relative;width:100%;max-width:500px;height:300px;margin:0 auto 25px;border-radius:20px;border:1px solid rgba(230,210,240,.15);background:rgba(255,255,255,.035);overflow:hidden;"></div>
+  <p id="osu-score" class="hint">Círculos: 0 / 5</p>
+ `);
+ setTimeout(startOsu,750);
+}
 
-    </script>
+function startOsu(){
+ const area=document.getElementById('osu-area');
+ const score=document.getElementById('osu-score');
+ if(!area||!score)return;
+ let count=0;
+ function spawn(){
+  if(count>=5){
+   changeScreen(`<div class="success"><div class="flower">🎮</div><div class="mission">MISIÓN SUPERADA</div><h2>¡Buen trabajo, petit!</h2><p class="text">Has acertado los 5 círculos. Tus reflejos siguen vivos.</p><div class="points">+1 punto de florecilla 🌸</div><br><br><button class="button" onclick="fourthTest()">Siguiente prueba →</button></div>`);
+   return;
+  }
+  const circle=document.createElement('button');
+  circle.type='button';
+  circle.setAttribute('aria-label','Círculo OSU');
+  const size=58;
+  circle.style.cssText=`position:absolute;width:${size}px;height:${size}px;border-radius:50%;border:3px solid #f4c7e8;background:rgba(216,200,255,.25);box-shadow:0 0 20px rgba(240,200,235,.35);cursor:pointer;left:${Math.random()*(area.clientWidth-size)}px;top:${Math.random()*(area.clientHeight-size)}px;`;
+  circle.onclick=()=>{count++;score.textContent=`Círculos: ${count} / 5`;circle.remove();spawn();};
+  area.appendChild(circle);
+ }
+ spawn();
+}
+
+function fourthTest(){changeScreen(`
+ <div class="flower">🤨</div>
+ <div class="mission">MISIÓN 4 / 4</div>
+ <h2>El interrogatorio de Petit</h2>
+ <p class="question">Pregunta definitiva... ¿qué haría Petit si alguien le lleva la contraria?</p>
+ <div class="answers">
+  <button class="answer" onclick="interrogationAnswer(1)">😤 Decir que está enfadada y marcharse</button>
+  <button class="answer" onclick="interrogationAnswer(2)">🗣️ Llamarle tonto al sospechoso</button>
+  <button class="answer" onclick="interrogationAnswer(3)">🥔 Convertirlo en minion</button>
+  <button class="answer" onclick="interrogationAnswer(4)">🧀 Hacerse la inocente como un quesito</button>
+ </div>
+`);}
+
+function interrogationAnswer(answer){
+ const messages={
+ 1:'Clásico. Dice que se va, pero todos sabemos que no se va de verdad.',
+ 2:'Respuesta aceptada. El "tonto" es prácticamente patrimonio cultural.',
+ 3:'Muy preocupante. Otro minion para la colección.',
+ 4:'Imposible discutir contra semejante quesito.'};
+ changeScreen(`<div class="success"><div class="flower">🌸</div><div class="mission">EXPEDIENTE COMPLETADO</div><h2>¡Interrogatorio superado!</h2><p class="text">${messages[answer]}<br><br>Has demostrado conocer demasiado bien a Petit.</p><div class="points">+1 punto de florecilla 🌸</div><br><br><button class="button" onclick="finalLetter()">Abrir el último sobre 💌</button></div>`);
+}
+
+function finalLetter(){changeScreen(`
+ <div class="flower">💌</div>
+ <div class="mission">ÚLTIMO SOBRE</div>
+ <h2>Para ti, petit</h2>
+ <p class="text" style="text-align:left;max-width:540px;">Bueno, petit...<br><br>Si has llegado hasta aquí, enhorabuena, has sobrevivido a todas las pruebas. :)<br><br>Quería hacerte esto porque es tu cumpleaños y, aunque estemos lejos y no pueda darte un regalo en persona, quería tener algún detallito preparado para ti.<br><br>Desde aquel día que nos conocimos, cuando empezamos a hablar por aquella tontería de Discord, han pasado un montón de cosas. Y sinceramente, me alegro muchísimo de que aquel día termináramos hablando.<br><br>Gracias por todas las conversaciones, por las risas, por llamarme tonto cada dos por tres, por tus enfados de mentira y por todas esas pequeñas cosas que hacen que hablar contigo sea tan divertido.<br><br>Y sí, seguiré llamándote minion, quesito y florecilla, así que no te emociones.<br><br>Solo quería que supieras que puedes contar conmigo cuando quieras, da igual la hora o el día. Si alguna vez necesitas hablar, distraerte, reírte de alguna tontería o simplemente molestarme un rato, aquí estaré.<br><br>Espero que cumplas muchos más y que este año te traiga un montón de momentos buenos.<br><br>Feliz cumpleaños, petit.<br><br>Y gracias por aparecer aquel día que nos conocimos.<br><br>Ahora vete a disfrutar de tus 16, anda. :)</p>
+ <button class="button" onclick="birthdayFinal()">Ver el final →</button>
+`);}
+
+function birthdayFinal(){changeScreen(`
+ <div class="flower">🌸</div>
+ <div class="mission">28 · 10 · 2026</div>
+ <h1>Feliz cumpleaños, florecilla</h1>
+ <p class="text">Gracias por ser tú, petit. :)<br><br>Fin de la aventura... por ahora.</p>
+`);}
+</script>
 
 </body>
 </html>
