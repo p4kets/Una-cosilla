@@ -786,7 +786,33 @@
     </main>
 
 
+
+    <!-- Música de fondo: se inicia cuando empieza la aventura y se pausa durante OSU! -->
+    <audio id="background-music" src="musica-fondo.mp3" loop preload="auto"></audio>
+
     <script>
+
+function startBackgroundMusic(){
+  const bg = document.getElementById('background-music');
+  if(!bg) return;
+  bg.volume = 0.32;
+  bg.play().catch(() => {
+    // Algunos navegadores bloquean el audio hasta que la persona interactúa.
+  });
+}
+
+function pauseBackgroundMusic(){
+  const bg = document.getElementById('background-music');
+  if(bg) bg.pause();
+}
+
+function resumeBackgroundMusic(){
+  const bg = document.getElementById('background-music');
+  if(!bg) return;
+  bg.volume = 0.32;
+  bg.play().catch(() => {});
+}
+
 function changeScreen(newContent){
  const screen=document.getElementById('screen');
  const content=document.getElementById('content');
@@ -794,7 +820,7 @@ function changeScreen(newContent){
  setTimeout(()=>{content.innerHTML=newContent;screen.classList.remove('fade-out');},700);
 }
 
-function startAdventure(){changeScreen(`
+function startAdventure(){startBackgroundMusic();changeScreen(`
  <div class="flower">🌙</div>
  <div class="mission">MISIÓN INICIADA</div>
  <h2>Hola, petit</h2>
@@ -848,6 +874,7 @@ function vampireAnswer(answer){
 }
 
 function thirdTest(){
+  pauseBackgroundMusic();
   changeScreen(`
    <div class="flower">🎧</div>
    <div class="mission">MISIÓN 3 / 4</div>
@@ -913,6 +940,7 @@ function startOsu(){
     clearInterval(clockTimer);
     if(activeCircle){activeCircle.remove();activeCircle=null;}
     music.pause();
+    setTimeout(resumeBackgroundMusic, 750);
     const accuracy=totalNotes?Math.round(hits/totalNotes*100):0;
     const rank=accuracy>=90?'S':accuracy>=75?'A':accuracy>=55?'B':'C';
     changeScreen(`<div class="success"><div class="flower">🎧</div><div class="mission">OSU! COMPLETADO</div><h2>¡Se acabó la canción!</h2><p class="text">Has sobrevivido a 90 segundos de ritmo, petit. Y yo que pensaba que te ibas a poner nerviosa... 😭</p><div class="points">Rango ${rank} · ${hits} aciertos · ${misses} fallos</div><p class="text" style="margin-top:18px;">Mejor combo: ${bestCombo} · Precisión: ${accuracy}%<br><br>${accuracy>=85?'Vale, vale... sí que eres buena. No te emociones. 😂':'JAJAJA, habrá que entrenar esas manitas, florecilla.'}</p><button class="button" onclick="fourthTest()">Siguiente prueba →</button></div>`);
@@ -983,6 +1011,7 @@ function startOsu(){
     music.addEventListener('ended',()=>{if(!finished)finish();},{once:true});
   }).catch(()=>{
     feedback.textContent='No se ha podido reproducir el audio. Comprueba que Cayo-La-Noche-Remix.mp3 esté en la misma carpeta que index.html.';
+    resumeBackgroundMusic();
     startButton.disabled=false;
     startButton.textContent='Reintentar 🎶';
   });
