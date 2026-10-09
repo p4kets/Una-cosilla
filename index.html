@@ -848,36 +848,144 @@ function vampireAnswer(answer){
 }
 
 function thirdTest(){
- changeScreen(`
-  <div class="flower">🎮</div>
-  <div class="mission">MISIÓN 3 / 4</div>
-  <h2>El reto de OSU!</h2>
-  <p class="text">A ver si tus reflejos siguen funcionando, petit.<br><br>Haz clic en los 5 círculos que aparecerán.</p>
-  <div id="osu-area" style="position:relative;width:100%;max-width:500px;height:300px;margin:0 auto 25px;border-radius:20px;border:1px solid rgba(230,210,240,.15);background:rgba(255,255,255,.035);overflow:hidden;"></div>
-  <p id="osu-score" class="hint">Círculos: 0 / 5</p>
- `);
- setTimeout(startOsu,750);
+  changeScreen(`
+   <div class="flower">🎧</div>
+   <div class="mission">MISIÓN 3 / 4</div>
+   <h2>OSU! — Cayó La Noche</h2>
+   <p class="text">Ahora sí, petit. Esta vez tendrás que seguir el ritmo de <i>Cayó La Noche (Remix)</i> durante 90 segundos. Empieza tranquilita... pero no te confíes. 😈</p>
+   <div style="max-width:500px;margin:0 auto 18px;">
+     <audio id="osu-music" preload="auto" src="Cayo-La-Noche-Remix.mp3"></audio>
+     <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px;color:#d8c8ff;font-size:14px;">
+       <span id="osu-time">Tiempo: 0:00 / 1:30</span>
+       <span id="osu-stats">Aciertos: 0 · Fallos: 0</span>
+     </div>
+     <div style="height:7px;border-radius:10px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:14px;">
+       <div id="osu-progress" style="height:100%;width:0%;background:linear-gradient(90deg,#f4c7e8,#d8c8ff);transition:width .15s;"></div>
+     </div>
+     <div id="osu-area" style="position:relative;width:100%;height:320px;margin:0 auto 12px;border-radius:20px;border:1px solid rgba(230,210,240,.2);background:radial-gradient(circle,rgba(115,82,170,.2),rgba(255,255,255,.025));overflow:hidden;touch-action:manipulation;">
+       <div style="position:absolute;inset:0;display:grid;place-items:center;color:#a9a1bd;font-size:14px;">Pulsa «Empezar» para sincronizar la música 🎵</div>
+     </div>
+     <p id="osu-feedback" class="hint" aria-live="polite">Cada círculo cuenta. ¡No te duermas, florecilla!</p>
+     <button id="osu-start" class="button" onclick="startOsu()">Empezar la canción 🎶</button>
+   </div>
+  `);
 }
 
 function startOsu(){
- const area=document.getElementById('osu-area');
- const score=document.getElementById('osu-score');
- if(!area||!score)return;
- let count=0;
- function spawn(){
-  if(count>=5){
-   changeScreen(`<div class="success"><div class="flower">🎮</div><div class="mission">MISIÓN SUPERADA</div><h2>¡Buen trabajo, petit!</h2><p class="text">Has acertado los 5 círculos. Tus reflejos siguen vivos.</p><div class="points">+1 punto de florecilla 🌸</div><br><br><button class="button" onclick="fourthTest()">Siguiente prueba →</button></div>`);
-   return;
+  const area=document.getElementById('osu-area');
+  const score=document.getElementById('osu-stats');
+  const timer=document.getElementById('osu-time');
+  const progress=document.getElementById('osu-progress');
+  const feedback=document.getElementById('osu-feedback');
+  const startButton=document.getElementById('osu-start');
+  const music=document.getElementById('osu-music');
+  if(!area||!score||!timer||!progress||!feedback||!music)return;
+
+  // Tempo aproximado detectado en el audio: unos 117,45 BPM.
+  // Un círculo por pulso durante 90 segundos.
+  const bpm=117.45;
+  const beatMs=60000/bpm;
+  const durationMs=90000;
+  const missMessages=[
+    "JA, tan buena no eras, ee 😂",
+    "JA, y tú te creías buena. 😂",
+    "AYYY, que se nos pone nerviosa la florecilla JAJAJA"
+  ];
+  const hitMessages=[
+    "¡Bien ahí, petit! 👀",
+    "Uyyy, parece que sí tienes manos.",
+    "Eso ha sido sospechosamente bueno. 🌸",
+    "¡Sigue el ritmo, florecilla! 🎶"
+  ];
+  let hits=0, misses=0, combo=0, bestCombo=0, noteIndex=0;
+  let startedAt=0, activeCircle=null, nextTimer=null, clockTimer=null, finished=false;
+  const totalNotes=Math.floor(durationMs/beatMs);
+  startButton.disabled=true;
+  startButton.textContent="¡A jugar! 🎯";
+  area.innerHTML='';
+  music.currentTime=0;
+  music.volume=0.8;
+
+  const finish=()=>{
+    if(finished)return;
+    finished=true;
+    clearTimeout(nextTimer);
+    clearInterval(clockTimer);
+    if(activeCircle){activeCircle.remove();activeCircle=null;}
+    music.pause();
+    const accuracy=totalNotes?Math.round(hits/totalNotes*100):0;
+    const rank=accuracy>=90?'S':accuracy>=75?'A':accuracy>=55?'B':'C';
+    changeScreen(`<div class="success"><div class="flower">🎧</div><div class="mission">OSU! COMPLETADO</div><h2>¡Se acabó la canción!</h2><p class="text">Has sobrevivido a 90 segundos de ritmo, petit. Y yo que pensaba que te ibas a poner nerviosa... 😭</p><div class="points">Rango ${rank} · ${hits} aciertos · ${misses} fallos</div><p class="text" style="margin-top:18px;">Mejor combo: ${bestCombo} · Precisión: ${accuracy}%<br><br>${accuracy>=85?'Vale, vale... sí que eres buena. No te emociones. 😂':'JAJAJA, habrá que entrenar esas manitas, florecilla.'}</p><button class="button" onclick="fourthTest()">Siguiente prueba →</button></div>`);
+  };
+
+  const spawnNote=()=>{
+    if(finished)return;
+    const elapsed=performance.now()-startedAt;
+    if(elapsed>=durationMs || noteIndex>=totalNotes){finish();return;}
+    noteIndex++;
+    area.innerHTML='';
+    // Cada 30 segundos se reduce el tamaño y el tiempo disponible.
+    const phase=Math.min(2,Math.floor(elapsed/30000));
+    const size=[56,46,36][phase];
+    const availableWidth=Math.max(1,area.clientWidth-size);
+    const availableHeight=Math.max(1,area.clientHeight-size);
+    const x=Math.random()*availableWidth;
+    const y=Math.random()*availableHeight;
+    const circle=document.createElement('button');
+    circle.type='button';
+    circle.setAttribute('aria-label','Círculo OSU');
+    circle.style.cssText=`position:absolute;width:${size}px;height:${size}px;left:${x}px;top:${y}px;border-radius:50%;border:3px solid #f4c7e8;background:rgba(216,200,255,.2);box-shadow:0 0 18px rgba(240,200,235,.5);cursor:pointer;padding:0;display:grid;place-items:center;color:white;font-size:12px;`;
+    const ring=document.createElement('span');
+    ring.style.cssText=`position:absolute;inset:-7px;border:2px solid #d8c8ff;border-radius:50%;animation:osuShrink ${Math.max(350,beatMs-50)}ms linear forwards;pointer-events:none;`;
+    circle.appendChild(ring);
+    circle.onclick=()=>{
+      if(finished||!circle.isConnected)return;
+      hits++;combo++;bestCombo=Math.max(bestCombo,combo);
+      feedback.textContent=hitMessages[Math.floor(Math.random()*hitMessages.length)];
+      circle.remove();activeCircle=null;
+      score.textContent=`Aciertos: ${hits} · Fallos: ${misses} · Combo: ${combo}`;
+    };
+    area.appendChild(circle);
+    activeCircle=circle;
+    const lifeMs=Math.max(350,beatMs-25);
+    nextTimer=setTimeout(()=>{
+      if(finished)return;
+      if(activeCircle===circle && circle.isConnected){
+        misses++;combo=0;
+        feedback.textContent=missMessages[Math.floor(Math.random()*missMessages.length)];
+        circle.remove();activeCircle=null;
+        score.textContent=`Aciertos: ${hits} · Fallos: ${misses} · Combo: ${combo}`;
+      }
+      const targetTime=startedAt+noteIndex*beatMs;
+      nextTimer=setTimeout(spawnNote,Math.max(0,targetTime-performance.now()));
+    },lifeMs);
+  };
+
+  if(!document.getElementById('osu-animation-style')){
+    const style=document.createElement('style');
+    style.id='osu-animation-style';
+    style.textContent='@keyframes osuShrink{from{transform:scale(1.45);opacity:.95}to{transform:scale(.7);opacity:.35}}';
+    document.head.appendChild(style);
   }
-  const circle=document.createElement('button');
-  circle.type='button';
-  circle.setAttribute('aria-label','Círculo OSU');
-  const size=58;
-  circle.style.cssText=`position:absolute;width:${size}px;height:${size}px;border-radius:50%;border:3px solid #f4c7e8;background:rgba(216,200,255,.25);box-shadow:0 0 20px rgba(240,200,235,.35);cursor:pointer;left:${Math.random()*(area.clientWidth-size)}px;top:${Math.random()*(area.clientHeight-size)}px;`;
-  circle.onclick=()=>{count++;score.textContent=`Círculos: ${count} / 5`;circle.remove();spawn();};
-  area.appendChild(circle);
- }
- spawn();
+
+  music.play().then(()=>{
+    startedAt=performance.now();
+    startButton.style.display='none';
+    feedback.textContent='¡Sigue el beat! Cada vez será más difícil. 😈';
+    spawnNote();
+    clockTimer=setInterval(()=>{
+      const elapsed=Math.min(durationMs,performance.now()-startedAt);
+      const seconds=Math.floor(elapsed/1000);
+      timer.textContent=`Tiempo: ${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')} / 1:30`;
+      progress.style.width=`${elapsed/durationMs*100}%`;
+      if(elapsed>=durationMs)finish();
+    },100);
+    music.addEventListener('ended',()=>{if(!finished)finish();},{once:true});
+  }).catch(()=>{
+    feedback.textContent='No se ha podido reproducir el audio. Comprueba que Cayo-La-Noche-Remix.mp3 esté en la misma carpeta que index.html.';
+    startButton.disabled=false;
+    startButton.textContent='Reintentar 🎶';
+  });
 }
 
 function fourthTest(){changeScreen(`
